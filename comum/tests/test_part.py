@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Permission
 from django.test import TestCase, Client
 
+from comum.factories.car_model import CarModelFactory
 from comum.factories.group import GroupFactory
 from comum.factories.user import UserFactory
 from django.urls import reverse
@@ -44,6 +45,7 @@ class PartTest(TestCase):
         self.admin_user = UserFactory(password="password123")
         self.admin_user.groups.add(self.admin_group)
         self.part = PartFactory(part_number="EREIFHEIUF3929", name="teste", details="teste do PArt", price=100.00, quantity=10)
+        self.car_model = CarModelFactory(name="TORO", manufacturer="FIAT", year=1999)
         self.data = {
             "part_number": "ISSDIUGSFUGY",
             "name": "AMORTECEDOR",
@@ -173,7 +175,7 @@ class PartTest(TestCase):
         )
         self.assertEqual(response.status_code, 500)
 
-    def test_list_parts_filter(self):
+    def test_list_parts(self):
         self.client.login(username=self.common_user.username, password="password123")
         session = self.client.session
         session.save()
@@ -184,3 +186,55 @@ class PartTest(TestCase):
             HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_view_part(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("manage-part", kwargs={"part_id": self.part.id}),
+            data=None,
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['name'], 'teste')
+        self.assertEqual(response.json()['details'], 'teste do PArt')
+
+    def test_view_part_without_token(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("manage-part", kwargs={"part_id": self.part.id}),
+            data=None,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()['errors']['message'], 'No Authorization header provided.')
+
+    def test_view_parts_car_model(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("parts-car-model", kwargs={"car_model_id": self.car_model.id}),
+            data=None,
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_parts_car_model_without_token(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("parts-car-model", kwargs={"car_model_id": self.car_model.id}),
+            data=None,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()['errors']['message'], 'No Authorization header provided.')
+
+

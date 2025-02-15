@@ -181,7 +181,7 @@ class CarModelTest(TestCase):
         self.assertEqual(response.json()['errors']['message'], 'No Authorization header provided.')
 
 
-    def test_list_cars_models_filter(self):
+    def test_list_cars_models(self):
         self.client.login(username=self.admin_user.username, password="password123")
         session = self.client.session
         session.save()
@@ -193,7 +193,7 @@ class CarModelTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_list_cars_models_filter_token(self):
+    def test_list_cars_models_without_token(self):
         self.client.login(username=self.admin_user.username, password="password123")
         session = self.client.session
         session.save()
@@ -204,3 +204,74 @@ class CarModelTest(TestCase):
         )
         self.assertEqual(response.status_code, 500)
         self.assertEqual(response.json()['errors']['message'], 'No Authorization header provided.')
+
+    def test_view_car_model(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("manage-car-model", kwargs={"car_model_id": self.car_model.id}),
+            data=None,
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['name'], 'TORO')
+        self.assertEqual(response.json()['manufacturer'], 'FIAT')
+
+    def test_view_cars_model_part(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("cars-model-part", kwargs={"part_id": self.part.id}),
+            data=None,
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_cars_model_part_without_token(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        response = self.client.get(
+            path=reverse("cars-model-part", kwargs={"part_id": self.part.id}),
+            data=None,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json()['errors']['message'], 'No Authorization header provided.')
+
+    def test_associate_parts_car_model(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        data = {
+            "part_ids": [self.part.id],
+            "car_model_ids": [self.car_model.id]
+        }
+        response = self.client.post(
+            path=reverse("associate-parts-cars-model"),
+            data=data,
+            content_type="application/json",
+            HTTP_AUTHORIZATION=f"Bearer {self.common_token}",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['message'], 'Peças associadas com sucesso')
+
+    def test_associate_parts_car_model_without_token(self):
+        self.client.login(username=self.common_user.username, password="password123")
+        session = self.client.session
+        session.save()
+        data = {
+            "part_ids": [self.part.id],
+            "car_model_ids": [self.car_model.id]
+        }
+        response = self.client.post(
+            path=reverse("associate-parts-cars-model"),
+            data=data,
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json()['errors']['message'], 'As credenciais de autenticação não foram fornecidas.')
