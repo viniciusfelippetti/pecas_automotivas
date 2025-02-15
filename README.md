@@ -18,8 +18,7 @@
  ### 1. Git Clone do Projeto
 Crie um ambiente virtual para isolar as dependências do projeto:
 ```bash
-[mkvirtualenv pecas_automotivas
-workon pecas_automotivas](https://github.com/viniciusfelippetti/pecas_automotivas.git)
+https://github.com/viniciusfelippetti/pecas_automotivas.git
 ```
 
 ### 3. Instalar Dependências Python
