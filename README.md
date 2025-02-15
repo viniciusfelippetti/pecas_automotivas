@@ -21,44 +21,49 @@ Crie um ambiente virtual para isolar as dependências do projeto:
 https://github.com/viniciusfelippetti/pecas_automotivas.git
 ```
 
-### 2. Criar Ambiente Virtual
+ ### 2. Entre no diretório do projeto
+```bash
+cd pecas_automotivas/
+```
+
+### 3. Criar Ambiente Virtual
 Crie um ambiente virtual para isolar as dependências do projeto:
 ```bash
 mkvirtualenv pecas_automotivas
 workon pecas_automotivas
 ```
 
-### 3. Instalar Dependências
+### 4. Instalar Dependências
 Instale todas as dependências listadas no arquivo requirements.txt:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configurar o Banco de Dados
+### 5. Configurar o Banco de Dados
 Aplique as migrações para configurar o banco de dados:
 ```bash
 python manage.py migrate
 ```
 
-### 5. Importar Configurações Iniciais
+### 6. Importar Configurações Iniciais
 Agora, importe os grupos (administrador: id=1 / comum: id=2). Importante saber os ids para vincular o usuário ao grupo. O Administrador possui todas as permissões, o comum possui as permissões de visualização.
 ```bash
 python manage.py configuracoes_iniciais
 ```
 
-### 6. Rodar o Servidor
+### 7. Rodar o Servidor
 Após configurar o banco de dados e importar os grupos e permissões, inicie o servidor de desenvolvimento Django:
 ```bash
 python manage.py runserver
 ```
 
-### 7. Iniciar Worker do Celery
+### 8. Iniciar Worker do Celery
 Em paralelo, abrir outro terminal e rodar o comando abaixo, vai ser fundamental no momento do upload do arquivo (arquivo de parts).
 ```bash
 celery -A pecas_automotivas worker -l info
 ```
 
-### 8. Rodar testes
+### 9. Rodar testes
 Rodar testes unitários das APIS (incluindo autenticação jwt, permissões, endpoints dos cruds...)
 ```bash
 python manage.py test
