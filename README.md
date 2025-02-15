@@ -21,8 +21,15 @@ Crie um ambiente virtual para isolar as dependências do projeto:
 https://github.com/viniciusfelippetti/pecas_automotivas.git
 ```
 
-### 3. Instalar Dependências Python
-Instale todas as dependências Python listadas no arquivo requirements.txt:
+### 2. Criar Ambiente Virtual
+Crie um ambiente virtual para isolar as dependências do projeto:
+```bash
+mkvirtualenv pecas_automotivas
+workon pecas_automotivas
+```
+
+### 3. Instalar Dependências
+Instale todas as dependências listadas no arquivo requirements.txt:
 ```bash
 pip install -r requirements.txt
 ```
