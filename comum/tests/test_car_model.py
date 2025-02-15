@@ -274,4 +274,4 @@ class CarModelTest(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 401)
-        self.assertEqual(response.json()['errors']['message'], 'As credenciais de autenticação não foram fornecidas.')
+        self.assertEqual(response.json()['detail'], 'As credenciais de autenticação não foram fornecidas.')
