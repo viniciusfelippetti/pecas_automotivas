@@ -81,11 +81,11 @@ class AddUserGroupModelView(GenericModelView, mixins.ViewUpdateModelMixin):
         add_group_ids = []
 
         if not isinstance(ids, list):
-            return JsonResponse({"detail": "O campo 'group_-ids' deve ser uma lista."}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"detail": "O campo 'group_ids' deve ser uma lista."}, status=status.HTTP_400_BAD_REQUEST)
 
         for group_id in ids:
             try:
-                if user.groups.filter(pk=group_id).exists():
+                if not user.groups.filter(pk=group_id).exists():
                     group = Group.objects.get(pk=group_id)
                     user.groups.add(group)
                     groups_add_count += 1
