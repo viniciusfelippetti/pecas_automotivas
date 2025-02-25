@@ -6,6 +6,7 @@ services:
     command: >
       sh -c "wait-for-it db:5432 -- wait-for-it redis:6379 -- python manage.py makemigrations &&
            python manage.py migrate &&
+           python manage.py test &&
            python manage.py configuracoes_iniciais &&
            python manage.py runserver 0.0.0.0:8000"
     depends_on:
