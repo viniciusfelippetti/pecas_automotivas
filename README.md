@@ -14,6 +14,7 @@
 - Python 3.12
 - pip 25.0.1
 - Django 5+
+- Docker 25+
 
  ### 1. Git Clone do Projeto
 Crie um ambiente virtual para isolar as dependências do projeto:
@@ -26,48 +27,18 @@ https://github.com/viniciusfelippetti/pecas_automotivas.git
 cd pecas_automotivas/
 ```
 
-### 3. Criar Ambiente Virtual
-Crie um ambiente virtual para isolar as dependências do projeto:
+### 3. Rodar Comandos
+Cria os containers do banco, do app e do celery, e roda todos os comando necessários para início do projeto (instala os requirements, roda o arquivo configuracoes_iniciais, realiza todos os testes, o makemigrations, o migrate, inicia o worker do Celery e inicia a aplicação...)
 ```bash
-mkvirtualenv pecas_automotivas
-workon pecas_automotivas
+docker-compose build
+docker-compose up
 ```
 
-### 4. Instalar Dependências
-Instale todas as dependências listadas no arquivo requirements.txt:
-```bash
-pip install -r requirements.txt
-```
+### Arquivo Configurações Iniciais
+Importa os grupos (administrador: id=1 / comum: id=2). Importante saber os ids para vincular o usuário ao grupo. O Administrador possui todas as permissões, o comum possui as permissões de visualização.
 
-### 5. Configurar o Banco de Dados
-Aplique as migrações para configurar o banco de dados:
-```bash
-python manage.py migrate
-```
-
-### 6. Importar Configurações Iniciais
-Agora, importe os grupos (administrador: id=1 / comum: id=2). Importante saber os ids para vincular o usuário ao grupo. O Administrador possui todas as permissões, o comum possui as permissões de visualização.
-```bash
-python manage.py configuracoes_iniciais
-```
-
-### 7. Rodar o Servidor
-Após configurar o banco de dados e importar os grupos e permissões, inicie o servidor de desenvolvimento Django:
-```bash
-python manage.py runserver
-```
-
-### 8. Iniciar Worker do Celery
-Em paralelo, abrir outro terminal e rodar o comando abaixo, vai ser fundamental no momento do upload do arquivo (arquivo de parts).
-```bash
-celery -A pecas_automotivas worker -l info
-```
-
-### 9. Rodar testes
-Rodar testes unitários das APIS (incluindo autenticação jwt, permissões, endpoints dos cruds...)
-```bash
-python manage.py test
-```
+### Realização dos testes
+Roda os testes unitários das APIS (incluindo autenticação jwt, permissões, endpoints dos cruds...)
 
 # APIS
 
