@@ -27,7 +27,7 @@ services:
       - REDIS_HOST=redis
 
     volumes:
-      - uploads:/temp
+      - uploads:/pecas_automotivas/temp
 
   db:
     image: postgres
@@ -52,7 +52,7 @@ services:
     networks:
       - mynetwork
     volumes:
-      - uploads:/temp
+      - uploads:/pecas_automotivas/temp
 
 networks:
   mynetwork:

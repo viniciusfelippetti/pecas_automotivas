@@ -111,7 +111,6 @@ class PartsCarModelView(GenericModelView, mixins.ViewRetrieveModelMixin):
 
     def _check_jwt_authentication(self, request):
         """ Verifica a autenticação JWT manualmente. """
-        print(request.user)
         auth = request.headers.get('Authorization')
 
         if not auth:

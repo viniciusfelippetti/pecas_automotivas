@@ -85,7 +85,7 @@ DATABASES = {
         "NAME": "pecas_automotivas",
         "USER": "postgres",
         "PASSWORD": "admin123",
-        "HOST": "localhost",
+        "HOST": "db",
         "PORT": "5432",
     }
 }
@@ -155,5 +155,6 @@ SIMPLE_JWT = {
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_TIMEZONE = 'America/Sao_Paulo'

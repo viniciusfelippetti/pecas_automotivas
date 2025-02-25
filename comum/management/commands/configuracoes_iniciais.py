@@ -8,7 +8,6 @@ def criar_grupos_e_usuarios():
     # Grupos
     grupo_administrador = Group.objects.create(name='administrador')
     grupo_comum = Group.objects.create(name='comum')
-    print(grupo_administrador.id)
     all_permissions = Permission.objects.all()
     for permission in all_permissions:
         grupo_administrador.permissions.add(permission)
